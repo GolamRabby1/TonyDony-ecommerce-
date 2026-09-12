@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "name": "Quantum Chrono",
+    "category": "Watches",
+    "price": 499.99,
+    "rating": 4.9,
+    "image": "https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=500&q=80",
+    "description": "A timepiece from the future, featuring holographic displays and zero-gravity movement."
+  },
+  {
+    "id": 2,
+    "name": "Neo Aero Sneakers",
+    "category": "Shoes",
+    "price": 299.99,
+    "rating": 4.8,
+    "image": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500&q=80",
+    "description": "Anti-gravity sole with adaptive traction. Designed for the urban explorer."
+  },
+  {
+    "id": 3,
+    "name": "Cyber Shades X",
+    "category": "Sunglasses",
+    "price": 199.99,
+    "rating": 4.7,
+    "image": "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=500&q=80",
+    "description": "AR-enabled visor with UV protection and real-time data overlay."
+  },
+  {
+    "id": 4,
+    "name": "Holo-Bag Pro",
+    "category": "Bags",
+    "price": 349.99,
+    "rating": 4.6,
+    "image": "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500&q=80",
+    "description": "Infinite storage pocket using micro-compression technology."
+  }
+]
