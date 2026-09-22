@@ -3,7 +3,8 @@
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Float, Icosahedron } from '@react-three/drei';
 import { useRef, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+// ✅ FIX: Imported Variants and removed unused AnimatePresence
+import { motion, Variants } from 'framer-motion';
 import * as THREE from 'three';
 
 // --- 3D Glitch Core Component ---
@@ -37,7 +38,8 @@ function GlitchCore() {
 }
 
 // --- Animation Variants ---
-const containerVariants = {
+// ✅ FIX: Explicitly typed as Variants to resolve the Netlify build error
+const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
@@ -45,7 +47,7 @@ const containerVariants = {
   },
 };
 
-const itemVariants = {
+const itemVariants: Variants = {
   hidden: { opacity: 0, x: -30 },
   visible: { opacity: 1, x: 0, transition: { duration: 0.5, ease: "easeOut" } },
 };
@@ -67,8 +69,9 @@ export default function ContactPage() {
     <div className="min-h-screen pt-24 pb-20 relative overflow-hidden flex items-center justify-center">
       
       {/* Background Gradient Orbs */}
-      <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-neon-blue/5 rounded-full blur-3xl"></div>
-      <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-accent-red/5 rounded-full blur-3xl"></div>
+      {/* ✅ FIX: w-[500px] -> w-125, h-[500px] -> h-125 */}
+      <div className="absolute top-1/4 left-1/4 w-125 h-125 bg-neon-blue/5 rounded-full blur-3xl"></div>
+      <div className="absolute bottom-1/4 right-1/4 w-125 h-125 bg-accent-red/5 rounded-full blur-3xl"></div>
 
       {/* Scanning Grid Overlay */}
       <div className="absolute inset-0 z-0 opacity-10" style={{ backgroundImage: 'linear-gradient(rgba(0, 243, 255, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 243, 255, 0.1) 1px, transparent 1px)', backgroundSize: '40px 40px' }}></div>
@@ -94,7 +97,8 @@ export default function ContactPage() {
           <div className="inline-block px-4 py-1 glass rounded-full border border-emerald-green/30 text-emerald-green text-xs tracking-[0.3em] mb-4 uppercase">
             Secure Channel
           </div>
-          <h1 className="text-6xl md:text-8xl font-display font-bold text-transparent bg-clip-text bg-gradient-to-r from-neon-blue via-emerald-green to-neon-blue mb-2">
+          {/* ✅ FIX: bg-gradient-to-r -> bg-linear-to-r */}
+          <h1 className="text-6xl md:text-8xl font-display font-bold text-transparent bg-clip-text bg-linear-to-r from-neon-blue via-emerald-green to-neon-blue mb-2">
             Establish Link
           </h1>
           <p className="text-gray-400 text-lg">Direct neural uplink or standard data transmission</p>
