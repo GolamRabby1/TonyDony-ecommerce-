@@ -4,19 +4,32 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import { Torus } from '@react-three/drei';
 import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
+import * as THREE from 'three'; // ✅ FIX: Import THREE for proper typing
 
 function FloatingTorus() {
-  const meshRef = useRef();
+  // ✅ FIX: Provide the generic type <THREE.Mesh> and the initial value (null)
+  const meshRef = useRef<THREE.Mesh>(null);
+
   useFrame((state) => {
     const time = state.clock.getElapsedTime();
-    meshRef.current.rotation.x = time * 0.3;
-    meshRef.current.rotation.y = time * 0.2;
-    meshRef.current.position.y = Math.sin(time) * 0.2;
+    
+    // ✅ FIX: Check if meshRef.current exists before accessing it
+    if (meshRef.current) {
+      meshRef.current.rotation.x = time * 0.3;
+      meshRef.current.rotation.y = time * 0.2;
+      meshRef.current.position.y = Math.sin(time) * 0.2;
+    }
   });
 
   return (
     <Torus ref={meshRef} args={[1, 0.4, 16, 100]}>
-      <meshStandardMaterial color="#ff0055" emissive="#ff0055" emissiveIntensity={0.5} roughness={0.2} metalness={0.8} />
+      <meshStandardMaterial 
+        color="#ff0055" 
+        emissive="#ff0055" 
+        emissiveIntensity={0.5} 
+        roughness={0.2} 
+        metalness={0.8} 
+      />
     </Torus>
   );
 }
