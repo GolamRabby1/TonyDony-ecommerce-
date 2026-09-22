@@ -3,10 +3,11 @@
 import { useState } from 'react';
 import ProductCard from '@/components/cards/ProductCard';
 import products from '@/data/products.json';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, Variants } from 'framer-motion';
+import Image from 'next/image'; // ✅ FIX: Import Next.js Image
 
 // --- Animation Variants ---
-const containerVariants = {
+const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
@@ -14,27 +15,23 @@ const containerVariants = {
   },
 };
 
-const itemVariants = {
+const itemVariants: Variants = {
   hidden: { opacity: 0, y: 40, scale: 0.95 },
   visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.5, ease: "easeOut" } },
   exit: { opacity: 0, scale: 0.9, transition: { duration: 0.3 } }
 };
 
-// Marquee text for the banner
 const promoText = "FLASH SALE • 50% OFF CYBERWEAR • LIMITED TIME • TONY-DONY EXCLUSIVE • FREE QUANTUM SHIPPING • ";
 
 export default function ShopPage() {
   const [activeFilter, setActiveFilter] = useState('All');
 
-  // Extract unique categories from the data
   const categories = ['All', ...Array.from(new Set(products.map(p => p.category)))];
   
-  // Filter products based on selection
   const filteredProducts = activeFilter === 'All' 
     ? products 
     : products.filter(product => product.category === activeFilter);
 
-  // 3D Tilt logic for the Advantage Cards
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
     const x = (e.clientX - left) / width - 0.5;
@@ -57,8 +54,9 @@ export default function ShopPage() {
     <div className="min-h-screen pt-28 pb-20 relative overflow-hidden">
       
       {/* Background Effects */}
-      <div className="absolute top-20 right-0 w-[600px] h-[600px] bg-neon-blue/5 rounded-full blur-3xl"></div>
-      <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-accent-red/5 rounded-full blur-3xl"></div>
+      {/* ✅ FIX: w-[600px] -> w-150, h-[600px] -> h-150 */}
+      <div className="absolute top-20 right-0 w-150 h-150 bg-neon-blue/5 rounded-full blur-3xl"></div>
+      <div className="absolute bottom-0 left-0 w-150 h-150 bg-accent-red/5 rounded-full blur-3xl"></div>
       <div className="absolute inset-0 opacity-5" style={{ backgroundImage: 'radial-gradient(rgba(0, 243, 255, 0.2) 1px, transparent 1px)', backgroundSize: '30px 30px' }}></div>
 
       <div className="relative z-10 px-4 md:px-8 max-w-7xl mx-auto">
@@ -78,7 +76,8 @@ export default function ShopPage() {
           >
             Premium Selection
           </motion.div>
-          <h1 className="text-6xl md:text-9xl font-display font-bold text-transparent bg-clip-text bg-gradient-to-r from-neon-blue via-white to-emerald-green mb-4">
+          {/* ✅ FIX: bg-gradient-to-r -> bg-linear-to-r */}
+          <h1 className="text-6xl md:text-9xl font-display font-bold text-transparent bg-clip-text bg-linear-to-r from-neon-blue via-white to-emerald-green mb-4">
             The Collection
           </h1>
           <p className="text-gray-400 text-lg max-w-2xl mx-auto">
@@ -133,8 +132,16 @@ export default function ShopPage() {
               <h2 className="text-2xl font-display font-bold text-white">Latest Drop</h2>
             </div>
             <div className="glass glass-hover rounded-2xl overflow-hidden grid grid-cols-1 md:grid-cols-2 group cursor-pointer border border-white/5">
-              <div className="h-64 md:h-[400px] overflow-hidden relative">
-                <img src={products[0].image} alt="Featured" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+              {/* ✅ FIX: md:h-[400px] -> md:h-100 */}
+              <div className="h-64 md:h-100 overflow-hidden relative">
+                {/* ✅ FIX: Replaced <img> with Next.js <Image> */}
+                <Image 
+                  src={products[0].image} 
+                  alt="Featured" 
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="object-cover group-hover:scale-110 transition-transform duration-700" 
+                />
                 <div className="absolute inset-0 bg-gradient-to-r from-dark-bg/80 to-transparent"></div>
               </div>
               <div className="p-10 flex flex-col justify-center relative">
@@ -155,9 +162,6 @@ export default function ShopPage() {
         {/* ==========================================
             2. NEW SECTION: CYBER PROMO BANNER
         ========================================== */}
-              {/* ==========================================
-            2. NEW SECTION: CYBER PROMO BANNER (UPDATED)
-        ========================================== */}
         <motion.div 
           className="mb-20 relative overflow-hidden rounded-2xl border border-white/10"
           initial={{ opacity: 0, scale: 0.98 }}
@@ -165,10 +169,7 @@ export default function ShopPage() {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          {/* Fast Scrolling Marquee Background - Two Rows */}
           <div className="absolute inset-0 overflow-hidden bg-dark-bg flex flex-col justify-center gap-4 z-0">
-            
-            {/* Row 1 - Moving Left (Neon Blue Tint) */}
             <motion.div 
               className="flex whitespace-nowrap"
               animate={{ x: ["0%", "-50%"] }}
@@ -181,7 +182,6 @@ export default function ShopPage() {
               ))}
             </motion.div>
 
-            {/* Row 2 - Moving Right (Emerald Green Tint) */}
             <motion.div 
               className="flex whitespace-nowrap"
               animate={{ x: ["-50%", "0%"] }}
@@ -193,10 +193,8 @@ export default function ShopPage() {
                 </span>
               ))}
             </motion.div>
-            
           </div>
 
-          {/* Glassmorphism Center Overlay - Reduced opacity to see the motion */}
           <div className="relative z-10 flex flex-col items-center justify-center text-center py-16 md:py-24 px-4 bg-dark-bg/40 backdrop-blur-sm border-y border-white/5">
             <motion.div
               initial={{ scale: 0.5, opacity: 0 }}
@@ -209,7 +207,7 @@ export default function ShopPage() {
             </motion.div>
             
             <h2 className="text-4xl md:text-7xl font-display font-bold text-white mb-4">
-              Cyber <span className="text-transparent bg-clip-text bg-gradient-to-r from-neon-blue to-emerald-green">Promo</span> Active
+              Cyber <span className="text-transparent bg-clip-text bg-linear-to-r from-neon-blue to-emerald-green">Promo</span> Active
             </h2>
             <p className="text-gray-300 text-lg max-w-xl mb-8">
               Upgrade your arsenal. Get 50% off all cyberwear and quantum accessories. Use code at checkout.
@@ -257,7 +255,7 @@ export default function ShopPage() {
           </div>
           
           <p className="text-gray-500 text-sm font-mono tracking-wider">
-            // RESULTS: <span className="text-neon-blue">{filteredProducts.length}</span>
+            {"// RESULTS: "}<span className="text-neon-blue">{filteredProducts.length}</span>
           </p>
         </div>
 
@@ -302,11 +300,10 @@ export default function ShopPage() {
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.8 }}
         >
-          {/* Moving Gradient Border Effect */}
-          <div className="absolute -inset-[2px] bg-gradient-to-r from-neon-blue via-emerald-green to-accent-red rounded-3xl opacity-70 blur-sm animate-pulse group-hover:opacity-100 transition-opacity duration-500"></div>
+          {/* ✅ FIX: -inset-[2px] -> -inset-0.5, bg-gradient-to-r -> bg-linear-to-r */}
+          <div className="absolute -inset-0.5 bg-linear-to-r from-neon-blue via-emerald-green to-accent-red rounded-3xl opacity-70 blur-sm animate-pulse group-hover:opacity-100 transition-opacity duration-500"></div>
           
           <div className="relative glass rounded-3xl p-12 md:p-20 text-center overflow-hidden bg-dark-bg/90 backdrop-blur-xl">
-            {/* Inner Glows */}
             <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-96 h-96 bg-emerald-green/10 rounded-full blur-3xl"></div>
             <div className="absolute bottom-0 left-0 w-96 h-96 bg-neon-blue/10 rounded-full blur-3xl"></div>
 
@@ -322,7 +319,7 @@ export default function ShopPage() {
               </motion.div>
               
               <h2 className="text-4xl md:text-7xl font-display font-bold text-white mb-4">
-                Join the <span className="text-transparent bg-clip-text bg-gradient-to-r from-neon-blue to-emerald-green">Neural Uplink</span>
+                Join the <span className="text-transparent bg-clip-text bg-linear-to-r from-neon-blue to-emerald-green">Neural Uplink</span>
               </h2>
               <p className="text-gray-400 text-lg max-w-2xl mx-auto mb-10">
                 Be the first to know about black-ops drops, prototype releases, and exclusive discounts. Direct to your inbox.

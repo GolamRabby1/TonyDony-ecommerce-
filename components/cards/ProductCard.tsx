@@ -2,7 +2,8 @@
 
 import { motion } from 'framer-motion';
 import { useState } from 'react';
-import Link from 'next/link'; // ADDED THIS IMPORT
+import Link from 'next/link';
+import Image from 'next/image'; // ✅ FIX: Import Next.js Image
 
 interface Product {
   id: number;
@@ -31,7 +32,6 @@ export default function ProductCard({ product }: { product: Product }) {
   };
 
   return (
-    // WRAPPED IN LINK so the whole card navigates to the details page
     <Link href={`/product/${product.id}`} className="block">
       <motion.div 
         className="glass glass-hover rounded-2xl p-4 cursor-pointer transition-all duration-200 ease-out relative overflow-hidden group"
@@ -44,21 +44,25 @@ export default function ProductCard({ product }: { product: Product }) {
         transition={{ duration: 0.5 }}
       >
         <div className="relative w-full h-64 rounded-xl overflow-hidden mb-4 bg-dark-bg/50">
-          <img 
+          {/* ✅ FIX: Replaced <img> with Next.js <Image> */}
+          <Image 
             src={product.image} 
             alt={product.name} 
-            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            className="object-cover transition-transform duration-700 group-hover:scale-110"
           />
-          <div className={`absolute inset-0 bg-gradient-to-t from-dark-bg via-transparent to-transparent flex items-end p-4 transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`}>
+          
+          {/* ✅ FIX: bg-gradient-to-t -> bg-linear-to-t */}
+          <div className={`absolute inset-0 bg-linear-to-t from-dark-bg via-transparent to-transparent flex items-end p-4 transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`}>
             <motion.button 
               className="w-full py-3 bg-accent-red text-white font-bold rounded-lg"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              // This prevents clicking "Add to Cart" from taking you to the product page
               onClick={(e) => {
                 e.preventDefault(); 
                 e.stopPropagation();
-                alert(`${product.name} added to cart!`); // Placeholder for real cart logic
+                alert(`${product.name} added to cart!`);
               }}
             >
               Add to Cart
