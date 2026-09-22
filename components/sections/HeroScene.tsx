@@ -6,7 +6,14 @@ import { Sphere, Stars } from '@react-three/drei';
 import { motion } from 'framer-motion';
 import * as THREE from 'three';
 
-function Earth({ mouse }) {
+// ✅ FIX: Define the type for the mouse prop
+type MousePosition = {
+  x: number;
+  y: number;
+};
+
+// ✅ FIX: Apply the type to the component props
+function Earth({ mouse }: { mouse: MousePosition }) {
   const meshRef = useRef<THREE.Mesh>(null);
 
   useFrame((state) => {
@@ -51,8 +58,9 @@ export default function HeroScene() {
       </div>
 
       <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
+        {/* ✅ FIX: Moved comment outside the tag, and used bg-linear-to-r */}
         <motion.h1 
-          className="text-5xl md:text-8xl font-display font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-neon-blue via-emerald-green to-accent-red"
+          className="text-5xl md:text-8xl font-display font-bold mb-6 text-transparent bg-clip-text bg-linear-to-r from-neon-blue via-emerald-green to-accent-red"
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, ease: "easeOut" }}

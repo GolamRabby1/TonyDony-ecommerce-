@@ -4,7 +4,7 @@ import { useState } from 'react';
 import ProductCard from '@/components/cards/ProductCard';
 import products from '@/data/products.json';
 import { motion, AnimatePresence, Variants } from 'framer-motion';
-import Image from 'next/image'; // ✅ FIX: Import Next.js Image
+import Image from 'next/image';
 
 // --- Animation Variants ---
 const containerVariants: Variants = {
@@ -54,7 +54,6 @@ export default function ShopPage() {
     <div className="min-h-screen pt-28 pb-20 relative overflow-hidden">
       
       {/* Background Effects */}
-      {/* ✅ FIX: w-[600px] -> w-150, h-[600px] -> h-150 */}
       <div className="absolute top-20 right-0 w-150 h-150 bg-neon-blue/5 rounded-full blur-3xl"></div>
       <div className="absolute bottom-0 left-0 w-150 h-150 bg-accent-red/5 rounded-full blur-3xl"></div>
       <div className="absolute inset-0 opacity-5" style={{ backgroundImage: 'radial-gradient(rgba(0, 243, 255, 0.2) 1px, transparent 1px)', backgroundSize: '30px 30px' }}></div>
@@ -76,7 +75,6 @@ export default function ShopPage() {
           >
             Premium Selection
           </motion.div>
-          {/* ✅ FIX: bg-gradient-to-r -> bg-linear-to-r */}
           <h1 className="text-6xl md:text-9xl font-display font-bold text-transparent bg-clip-text bg-linear-to-r from-neon-blue via-white to-emerald-green mb-4">
             The Collection
           </h1>
@@ -132,9 +130,7 @@ export default function ShopPage() {
               <h2 className="text-2xl font-display font-bold text-white">Latest Drop</h2>
             </div>
             <div className="glass glass-hover rounded-2xl overflow-hidden grid grid-cols-1 md:grid-cols-2 group cursor-pointer border border-white/5">
-              {/* ✅ FIX: md:h-[400px] -> md:h-100 */}
               <div className="h-64 md:h-100 overflow-hidden relative">
-                {/* ✅ FIX: Replaced <img> with Next.js <Image> */}
                 <Image 
                   src={products[0].image} 
                   alt="Featured" 
@@ -142,7 +138,7 @@ export default function ShopPage() {
                   sizes="(max-width: 768px) 100vw, 50vw"
                   className="object-cover group-hover:scale-110 transition-transform duration-700" 
                 />
-                <div className="absolute inset-0 bg-gradient-to-r from-dark-bg/80 to-transparent"></div>
+                <div className="absolute inset-0 bg-linear-to-r from-dark-bg/80 to-transparent"></div>
               </div>
               <div className="p-10 flex flex-col justify-center relative">
                 <span className="text-emerald-green text-sm font-bold uppercase tracking-widest mb-2">{products[0].category}</span>
@@ -159,9 +155,7 @@ export default function ShopPage() {
           </motion.div>
         )}
 
-        {/* ==========================================
-            2. NEW SECTION: CYBER PROMO BANNER
-        ========================================== */}
+        {/* 2. NEW SECTION: CYBER PROMO BANNER */}
         <motion.div 
           className="mb-20 relative overflow-hidden rounded-2xl border border-white/10"
           initial={{ opacity: 0, scale: 0.98 }}
@@ -265,9 +259,10 @@ export default function ShopPage() {
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          key={activeFilter}
+          // ✅ FIX 1: Removed key={activeFilter} to stop full remounting
         >
-          <AnimatePresence mode="popLayout">
+          {/* ✅ FIX 2: Changed mode from "popLayout" to "sync" to fix the hydration error */}
+          <AnimatePresence mode="sync">
             {filteredProducts.map((product) => (
               <motion.div
                 key={product.id}
@@ -300,7 +295,6 @@ export default function ShopPage() {
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.8 }}
         >
-          {/* ✅ FIX: -inset-[2px] -> -inset-0.5, bg-gradient-to-r -> bg-linear-to-r */}
           <div className="absolute -inset-0.5 bg-linear-to-r from-neon-blue via-emerald-green to-accent-red rounded-3xl opacity-70 blur-sm animate-pulse group-hover:opacity-100 transition-opacity duration-500"></div>
           
           <div className="relative glass rounded-3xl p-12 md:p-20 text-center overflow-hidden bg-dark-bg/90 backdrop-blur-xl">

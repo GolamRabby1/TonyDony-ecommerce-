@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image'; // ✅ FIX: Import Next.js Image
+import Image from 'next/image';
 
 interface Product {
   id: number;
@@ -44,7 +44,6 @@ export default function ProductCard({ product }: { product: Product }) {
         transition={{ duration: 0.5 }}
       >
         <div className="relative w-full h-64 rounded-xl overflow-hidden mb-4 bg-dark-bg/50">
-          {/* ✅ FIX: Replaced <img> with Next.js <Image> */}
           <Image 
             src={product.image} 
             alt={product.name} 
@@ -53,7 +52,6 @@ export default function ProductCard({ product }: { product: Product }) {
             className="object-cover transition-transform duration-700 group-hover:scale-110"
           />
           
-          {/* ✅ FIX: bg-gradient-to-t -> bg-linear-to-t */}
           <div className={`absolute inset-0 bg-linear-to-t from-dark-bg via-transparent to-transparent flex items-end p-4 transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`}>
             <motion.button 
               className="w-full py-3 bg-accent-red text-white font-bold rounded-lg"
